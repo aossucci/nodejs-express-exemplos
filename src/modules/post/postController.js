@@ -9,3 +9,5 @@ router.post('/', function (req, res) {
 router.post('/:id?', function (req, res) {
   res.send('GET POST /')
 })
+
+export default router
