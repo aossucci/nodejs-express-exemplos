@@ -1,14 +1,26 @@
 import { Router } from "express"
 import { verifyAccessToken } from "../utils/auth"
+import { creatPost, getPosts } from "./postService"
 
 const router = Router ()
 
 router.post('/', verifyAccessToken, (req, res) => {
-  res.send('CREAT POST /')
+  try {
+    const post = creatPost(req.body, req.user)
+    res.status(200).send(post)
+  } catch (err) {
+    res.status(500).send(err.message)
+  }
 })
 
-router.post('/:id?', verifyAccessToken, (req, res) => {
-  res.send('GET POST /')
+router.get('/:id?', verifyAccessToken, (req, res) => {
+  try{
+      const posts = getPosts(req.params.id)
+      res.status(200).send(posts)
+  } catch (err) {
+    res.status(500).send(err.message)
+
+  }
 })
 
 export default router
