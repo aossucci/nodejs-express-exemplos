@@ -1,13 +1,23 @@
+import { sign } from 'jsonwebtoken'
+
 let users = [] //para efeito de exemplo
+
+const generateAccessToken = (data) => sign(data, 'secret')
 
 const getUserByEmail = (searchEmail) =>
   users.find((obj) => obj.email === searchEmail)
 
 export const signup = (data) => {
-  if (getUserByEmail(data.email)) {
-    console.log("ok")
-  } else {
-    users.push(data)
-  }
-  return true
+  if (getUserByEmail(data.email)) throw new Error('email_existente')
+
+  users.push(data)
+    return generateAccessToken({ email: data.email })
+}
+
+export const login = (data) => {
+  const user = getUserByEmail(data.email)
+  if (!user) throw new Error('email_nao_encontrado')
+  if (user.password !== data.password) throw new Error('senha_incorreta')
+  
+  return generateAccessToken({ email: data.email })
 }
