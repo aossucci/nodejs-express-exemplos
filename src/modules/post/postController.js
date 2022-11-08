@@ -1,12 +1,13 @@
 import { Router } from "express"
+import { verifyAccessToken } from "../utils/auth"
 
 const router = Router ()
 
-router.post('/', function (req, res) {
+router.post('/', verifyAccessToken, (req, res) => {
   res.send('CREAT POST /')
 })
 
-router.post('/:id?', function (req, res) {
+router.post('/:id?', verifyAccessToken, (req, res) => {
   res.send('GET POST /')
 })
 
